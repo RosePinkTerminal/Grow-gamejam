@@ -30,6 +30,11 @@ func NewPlant(_name string, max int) Plant{
 		readyToHarvest: false}
 }
 
+func (p *Plant) UpdatePlant(){
+	//update sprite
+	p.UpdateStage()
+}
+
 func (p *Plant) GetName() string{
 	return p.name
 }
@@ -46,14 +51,32 @@ func (p *Plant) IncrementStage(){
 	p.currentStage++
 }
 
+func (p *Plant) UpdateStage(){
+	if(p.GetStage() >= p.GetMaxStage()){ 
+		p.SetReadyToHarvest()
+	}else/* if (/*on tick interval)*/{p.IncrementStage()}
+}
+
 func (p *Plant) IsWatered() bool{
 	return p.watered
+}
+
+func (p *Plant) SetWatered(){
+	p.watered = true
 }
 
 func (p *Plant) IsFertilized() bool{
 	return p.fertilized
 }
 
+func (p *Plant) SetFertilized(){
+	p.fertilized = true
+} 
+
 func (p *Plant) IsReadyToHarvest() bool{
 	return p.readyToHarvest
+}
+
+func (p *Plant) SetReadyToHarvest(){
+	p.readyToHarvest = true
 }
