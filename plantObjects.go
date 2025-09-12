@@ -10,5 +10,5 @@ type TestPlant struct{
 
 func NewTestPlant() TestPlant{
 	return TestPlant{
-		Plant: NewPlant("Test Plant", 5)}
+		Plant: NewPlant("Test Plant", 5, 3)}
 }

@@ -1,38 +1,48 @@
 package main
 
-// import (
+import (
+	"fmt"
+	"time"
 // 	rl "github.com/gen2brain/raylib-go/raylib"
-// )
+)
 
 type Plant struct{
 	name string
 	currentStage int
 	maxStage int
+	timerTime time.Duration
 	watered bool
 	fertilized bool
 	readyToHarvest bool
 	//animation object
 	//physics object
-	//timer object
+	// stageTimer time.Timer
 }
 
-func NewPlant(_name string, max int) Plant{
-	//new animation object
-	//new physics object
-	//new timer
-
-	return Plant{
+func NewPlant(_name string, _timerTime time.Duration, max int) Plant{
+	plantObj := Plant{
 		name: _name,
 		currentStage: 0,
 		maxStage: max,
+		timerTime: _timerTime,
 		watered: false,
 		fertilized: false,
 		readyToHarvest: false}
+
+	//new animation object
+	//new physics object
+
+	plantObj.SetPlantTimer(plantObj.timerTime)
+
+	return plantObj
+}
+
+func (p Plant) PrintPlant(){
+	fmt.Println("---\nName: ", p.name, "\nStage: ", p.currentStage, "\nMax: ", p.maxStage, "\nWatered: ", p.watered, "\nFertilized: ", p.fertilized, "\nHarvestable: ", p.readyToHarvest, "\nTimer: "/*, p.stageTimer.GetDuration(), "\n---"*/)
 }
 
 func (p *Plant) UpdatePlant(){
 	//update sprite
-	p.UpdateStage()
 }
 
 func (p *Plant) GetName() string{
@@ -49,12 +59,14 @@ func (p *Plant) GetMaxStage() int{
 
 func (p *Plant) IncrementStage(){
 	p.currentStage++
+	p.SetPlantTimer(p.timerTime)
 }
 
 func (p *Plant) UpdateStage(){
+	fmt.Println("Stage updated")
 	if(p.GetStage() >= p.GetMaxStage()){ 
 		p.SetReadyToHarvest()
-	}else/* if (/*on tick interval)*/{p.IncrementStage()}
+	}else{p.IncrementStage()}
 }
 
 func (p *Plant) IsWatered() bool{
@@ -79,4 +91,14 @@ func (p *Plant) IsReadyToHarvest() bool{
 
 func (p *Plant) SetReadyToHarvest(){
 	p.readyToHarvest = true
+	fmt.Println("Ready to harvest!")
+}
+
+func (p *Plant) SetPlantTimer(endTime time.Duration){
+	stageTimer := *time.NewTimer(time.Second * endTime)
+	go func(p *Plant){
+		<-stageTimer.C
+		fmt.Println("timer done")
+		p.UpdateStage()
+	}(p)
 }
