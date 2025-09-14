@@ -64,31 +64,27 @@ func (inv *Inventory) ListItems() {
 	}
 }
 
-func InventoryExample() {
-	rl.InitWindow(800, 600, "Inventory Example")
-	defer rl.CloseWindow()
-
+func DrawInventory(showInventory bool, textures map[string]rl.Texture2D) {
 	inventory := NewInventory(10)
-	inventory.AddItem("Potion", 5)
-	inventory.AddItem("Sword", 1)
-	inventory.AddItem("Sword", 1)
-	inventory.AddItem("Sword", 1)
-	inventory.AddItem("Sword", 1)
-	inventory.AddItem("Sword", 1)
+	inventory.AddItem("carrot", 5)
+	inventory.AddItem("carrot_seed", 3)
+
 	inventory.ListItems()
 
-	for !rl.WindowShouldClose() {
-		rl.BeginDrawing()
-		rl.ClearBackground(rl.RayWhite)
-		rl.DrawRectangle(int32(rl.GetScreenWidth())/20, int32(rl.GetScreenHeight())/10, int32(rl.GetScreenWidth())/2 + 50 * 5, int32(rl.GetScreenHeight())/2 + 25 * 2 , rl.LightGray)
-		rl.DrawText("Inventory", int32(rl.GetScreenWidth())/10, int32(rl.GetScreenHeight())/10, 20, rl.Black)
+	// Draw inventory UI once per call
+	rl.DrawRectangle(int32(rl.GetScreenWidth())/20, int32(rl.GetScreenHeight())/10, int32(rl.GetScreenWidth()/2)-80, int32(rl.GetScreenHeight())/5+25*2, rl.LightGray)
+	rl.DrawText("Inventory", int32(rl.GetScreenWidth())/15, int32(rl.GetScreenHeight())/8, 20, rl.Black)
 
-		for i, item := range inventory.Slots {
-			rl.DrawText(fmt.Sprintf("%s: %d", item.Name, item.Quantity), int32(10), int32(10+i*20), 20, rl.Black)
+	for index := 0; index < inventory.Limit; index++ {
+		rl.DrawRectangle(int32(rl.GetScreenWidth())/20+14+int32(index%5)*60, int32(rl.GetScreenHeight())/10+40+int32(index/5)*60, 50, 50, rl.DarkGray)
+		if index < len(inventory.Slots) {
+    		item := inventory.Slots[index]
+    		rl.DrawText(fmt.Sprintf("x%d", item.Quantity), int32(rl.GetScreenWidth())/20+20+int32(index%5)*60, int32(rl.GetScreenHeight())/10+78+int32(index/5)*60, 10, rl.White)
+
+	// use item name to load texture dynamically
+    		if tex, ok := textures[item.Name]; ok {
+        		rl.DrawTexture(tex, int32(rl.GetScreenWidth())/20+20+int32(index%5)*60, int32(rl.GetScreenHeight())/10+45+int32(index/5)*60, rl.White)
+    		} 
 		}
-
-		rl.EndDrawing()
 	}
 }
-
-
