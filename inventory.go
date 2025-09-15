@@ -24,7 +24,7 @@ func NewInventory(limit int) *Inventory {
 	}
 }
 
-func (inv *Inventory) AddItem(name string, quantity int) error {
+func (inv *Inventory) AddItem(name string, value int, quantity int) error {
 	if len(inv.Slots) >= inv.Limit {
 		return fmt.Errorf("inventory full")
 	}
@@ -34,7 +34,7 @@ func (inv *Inventory) AddItem(name string, quantity int) error {
 			return nil
 		}
 	}
-	inv.Slots = append(inv.Slots, Item{Name: name, Quantity: quantity})
+	inv.Slots = append(inv.Slots, Item{Name: name, Value: value, Quantity: quantity})
 	return nil
 }
 
@@ -66,8 +66,9 @@ func (inv *Inventory) ListItems() {
 
 func DrawInventory(showInventory bool, textures map[string]rl.Texture2D) {
 	inventory := NewInventory(10)
-	inventory.AddItem("carrot", 5)
-	inventory.AddItem("carrot_seed", 3)
+	inventory.AddItem("carrot",20, 5)
+	inventory.AddItem("carrot_seed", 5, 3)
+	inventory.AddItem("hoe", 0, 1)
 
 	inventory.ListItems()
 
