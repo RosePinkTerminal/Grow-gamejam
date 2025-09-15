@@ -8,15 +8,22 @@ type Plot struct{
 	watered bool
 	fertilized bool
 	hasPlant bool
+	//location
 }
 
-func NewPlot() Plot{
-	return Plot{
+func NewPlot() *Plot{
+	return &Plot{
 		Plant: nil,
 		tilled:false,
 		watered:false,
 		fertilized:false,
 		hasPlant:false}
+}
+
+func (p Plot)DrawPlot(){
+	if(p.HasPlant()){
+			p.GetPlant().DrawPlant();
+	}
 }
 
 //fully resets plot to empty state
@@ -67,4 +74,12 @@ func (p Plot)isFertilized() bool{
 
 func (p *Plot)Fertilize(){
 	p.fertilized = true;
+}
+
+func (p Plot)HasPlant() bool{
+	return p.hasPlant;
+}
+
+func (p Plot)GetPlant() Plant{
+	return *p.Plant;
 }

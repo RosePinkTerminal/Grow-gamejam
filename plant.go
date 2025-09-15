@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
-// 	rl "github.com/gen2brain/raylib-go/raylib"
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 type Plant struct{
@@ -12,21 +12,19 @@ type Plant struct{
 	maxStage int
 	timerTime time.Duration
 	harvestable bool
-	//animation object
+	stageText []rl.Texture2D
 	//physics object
 	// stageTimer time.Timer
 }
 
-func NewPlant(_name string, _timerTime time.Duration, max int) *Plant{
+func NewPlant(_name string, _timerTime time.Duration, max int, textures []rl.Texture2D) *Plant{
 	plantObj := Plant{
 		name: _name,
 		currentStage: 1,
 		maxStage: max,
 		timerTime: _timerTime,
-		harvestable: false}
-
-	//new animation object
-	//new physics object
+		harvestable: false,
+		stageText: textures}
 
 	plantObj.SetPlantTimer(plantObj.timerTime)
 
@@ -37,15 +35,20 @@ func (p Plant) PrintPlant(){
 	fmt.Println("---\nName: ", p.name, "\nStage: ", p.currentStage, "\nMax: ", p.maxStage, "\nHarvestable: ", p.harvestable, "\nTimer: "/*, p.stageTimer.GetDuration(), "\n---"*/)
 }
 
-func (p *Plant) UpdatePlant(){
-	//update sprite
+func (p Plant) DrawPlant(){
+
+	//check if texture at stage-1 exists
+	if(len(p.stageText) >= p.currentStage-1 && &p.stageText[p.currentStage-1] != nil){
+		//draw texture at stage-1
+		DrawTextureEz(p.stageText[p.currentStage-1], rl.NewVector2(16,16), 0, 1, rl.White)
+	}
 }
 
 func (p *Plant) GetName() string{
 	return p.name
 }
 
-func (p *Plant) GetStage() int{
+func (p Plant) GetStage() int{
 	return p.currentStage
 }
 
@@ -59,10 +62,14 @@ func (p *Plant) IncrementStage(){
 }
 
 func (p *Plant) UpdateStage(){
-	fmt.Println("Stage updated")
-	if(p.GetStage() >= p.GetMaxStage()){ 
+	fmt.Println("Stage updated, ", p.currentStage)
+	if(p.currentStage < p.maxStage){
+		p.IncrementStage()
+	}
+	
+	if(p.currentStage >= p.maxStage){ 
 		p.SetReadyToHarvest()
-	}else{p.IncrementStage()}
+	}
 } 
 
 func (p *Plant) IsReadyToHarvest() bool{
