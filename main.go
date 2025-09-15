@@ -22,6 +22,8 @@ func main(){
 
 		gm.DrawTiles()
 
+		gm.UpdatePlot();
+
 		if(rl.IsKeyPressed(rl.KeyS)){
 			fmt.Println("selected item: ", gm.GetSelectedItem().Name)
 		}

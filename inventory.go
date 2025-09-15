@@ -9,6 +9,7 @@ import (
 //item name constants
 const CARROT_SEED string = "carrot_seed"
 const CARROT string = "carrot"
+const CARROT_VALUE int = 5
 const HOE string = "hoe"
 
 type Item struct {
@@ -18,13 +19,13 @@ type Item struct {
 }
 
 type Inventory struct {
-	Slots []Item
+	Slots []*Item
 	Limit int
 }
 
 func NewInventory(limit int) *Inventory {
 	return &Inventory{
-		Slots: make([]Item, 0, limit),
+		Slots: make([]*Item, 0, limit),
 		Limit: limit,
 	}
 }
@@ -39,7 +40,7 @@ func (inv *Inventory) AddItem(name string, value int, quantity int) error {
 			return nil
 		}
 	}
-	inv.Slots = append(inv.Slots, Item{Name: name, Value: value, Quantity: quantity})
+	inv.Slots = append(inv.Slots, &Item{Name: name, Value: value, Quantity: quantity})
 	return nil
 }
 

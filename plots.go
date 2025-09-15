@@ -2,6 +2,7 @@ package main
 
 import(
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"fmt"
 )
 
 type Plot struct{
@@ -10,6 +11,7 @@ type Plot struct{
 	watered bool
 	fertilized bool
 	hasPlant bool
+	isMouseOver bool
 	location rl.Vector2
 }
 
@@ -20,7 +22,16 @@ func NewPlot(_location rl.Vector2) *Plot{
 		watered:false,
 		fertilized:false,
 		hasPlant:false,
+		isMouseOver: false,
 		location: _location}
+}
+
+func (gm *GameManager)Select(p *Plot){
+	switch(gm.Slots[gm.selectedItem].Name){
+	case CARROT_SEED:
+			p.AddPlant(NewCarrotPlant());
+			gm.Slots[gm.selectedItem].Quantity--;
+	}
 }
 
 func (p Plot)DrawPlot(){
@@ -95,4 +106,17 @@ func (p Plot)GetPlant() *Plant{
 		return nil
 	}
 	return p.Plant;
+}
+
+func (gm *GameManager)Harvest (p *Plot){
+	if(p.GetStage() >= p.GetMaxStage()){
+		fmt.Println("yahoo!");
+
+		switch(p.GetName()){
+		case CARROT_PLANT:
+			gm.AddItem(CARROT, CARROT_VALUE, 1);
+			p.RemovePlant();
+			break;
+		}
+	}
 }
