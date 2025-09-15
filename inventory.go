@@ -64,11 +64,8 @@ func (inv *Inventory) ListItems() {
 	}
 }
 
-func DrawInventory(showInventory bool, textures map[string]rl.Texture2D) {
-	inventory := NewInventory(10)
-	inventory.AddItem("carrot",20, 5)
-	inventory.AddItem("carrot_seed", 5, 3)
-	inventory.AddItem("hoe", 0, 1)
+func DrawInventory(showInventory bool, textures map[string]rl.Texture2D, inventory *Inventory) {
+
 
 	inventory.ListItems()
 
