@@ -35,12 +35,11 @@ func (p Plant) PrintPlant(){
 	fmt.Println("---\nName: ", p.name, "\nStage: ", p.currentStage, "\nMax: ", p.maxStage, "\nHarvestable: ", p.harvestable, "\nTimer: "/*, p.stageTimer.GetDuration(), "\n---"*/)
 }
 
-func (p Plant) DrawPlant(){
-
+func (p Plant) DrawPlant(location rl.Vector2){
 	//check if texture at stage-1 exists
 	if(len(p.stageText) >= p.currentStage-1 && &p.stageText[p.currentStage-1] != nil){
 		//draw texture at stage-1
-		DrawTextureEz(p.stageText[p.currentStage-1], rl.NewVector2(16,16), 0, 1, rl.White)
+		DrawTextureEz(p.stageText[p.currentStage-1], rl.NewVector2(location.X+16,location.Y+16), 0, 1, rl.White)
 	}
 }
 

@@ -1,6 +1,8 @@
 package main
 
-import()
+import(
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 type Plot struct{
 	*Plant
@@ -8,21 +10,22 @@ type Plot struct{
 	watered bool
 	fertilized bool
 	hasPlant bool
-	//location
+	location rl.Vector2
 }
 
-func NewPlot() *Plot{
+func NewPlot(_location rl.Vector2) *Plot{
 	return &Plot{
 		Plant: nil,
 		tilled:false,
 		watered:false,
 		fertilized:false,
-		hasPlant:false}
+		hasPlant:false,
+		location: _location}
 }
 
 func (p Plot)DrawPlot(){
 	if(p.HasPlant()){
-			p.GetPlant().DrawPlant();
+			p.GetPlant().DrawPlant(p.location);
 	}
 }
 
