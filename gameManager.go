@@ -12,7 +12,7 @@ type GameManager struct{
 }
 
 func NewGameManager() GameManager{
-	pt := GenerateTilesFromGrid(5, 5, rl.NewVector2(32, 32));
+	pt := GenerateTilesFromGrid(21, 10, rl.NewVector2(32, 32));
 	inv := NewInventory(5);
 	inv.AddItem(CARROT_SEED, 5, 1);
 
