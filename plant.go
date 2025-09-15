@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
-// 	rl "github.com/gen2brain/raylib-go/raylib"
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 type Plant struct{
@@ -11,45 +11,43 @@ type Plant struct{
 	currentStage int
 	maxStage int
 	timerTime time.Duration
-	watered bool
-	fertilized bool
-	readyToHarvest bool
-	//animation object
+	harvestable bool
+	stageText []rl.Texture2D
 	//physics object
 	// stageTimer time.Timer
 }
 
-func NewPlant(_name string, _timerTime time.Duration, max int) Plant{
+func NewPlant(_name string, _timerTime time.Duration, max int, textures []rl.Texture2D) *Plant{
 	plantObj := Plant{
 		name: _name,
-		currentStage: 0,
+		currentStage: 1,
 		maxStage: max,
 		timerTime: _timerTime,
-		watered: false,
-		fertilized: false,
-		readyToHarvest: false}
-
-	//new animation object
-	//new physics object
+		harvestable: false,
+		stageText: textures}
 
 	plantObj.SetPlantTimer(plantObj.timerTime)
 
-	return plantObj
+	return &plantObj
 }
 
 func (p Plant) PrintPlant(){
-	fmt.Println("---\nName: ", p.name, "\nStage: ", p.currentStage, "\nMax: ", p.maxStage, "\nWatered: ", p.watered, "\nFertilized: ", p.fertilized, "\nHarvestable: ", p.readyToHarvest, "\nTimer: "/*, p.stageTimer.GetDuration(), "\n---"*/)
+	fmt.Println("---\nName: ", p.name, "\nStage: ", p.currentStage, "\nMax: ", p.maxStage, "\nHarvestable: ", p.harvestable, "\nTimer: "/*, p.stageTimer.GetDuration(), "\n---"*/)
 }
 
-func (p *Plant) UpdatePlant(){
-	//update sprite
+func (p Plant) DrawPlant(location rl.Vector2){
+	//check if texture at stage-1 exists
+	if(len(p.stageText) >= p.currentStage-1 && &p.stageText[p.currentStage-1] != nil){
+		//draw texture at stage-1
+		DrawTextureEz(p.stageText[p.currentStage-1], rl.NewVector2(location.X+16,location.Y+16), 0, 1, rl.White)
+	}
 }
 
 func (p *Plant) GetName() string{
 	return p.name
 }
 
-func (p *Plant) GetStage() int{
+func (p Plant) GetStage() int{
 	return p.currentStage
 }
 
@@ -63,34 +61,22 @@ func (p *Plant) IncrementStage(){
 }
 
 func (p *Plant) UpdateStage(){
-	fmt.Println("Stage updated")
-	if(p.GetStage() >= p.GetMaxStage()){ 
+	fmt.Println("Stage updated, ", p.currentStage)
+	if(p.currentStage < p.maxStage){
+		p.IncrementStage()
+	}
+	
+	if(p.currentStage >= p.maxStage){ 
 		p.SetReadyToHarvest()
-	}else{p.IncrementStage()}
-}
-
-func (p *Plant) IsWatered() bool{
-	return p.watered
-}
-
-func (p *Plant) SetWatered(){
-	p.watered = true
-}
-
-func (p *Plant) IsFertilized() bool{
-	return p.fertilized
-}
-
-func (p *Plant) SetFertilized(){
-	p.fertilized = true
+	}
 } 
 
 func (p *Plant) IsReadyToHarvest() bool{
-	return p.readyToHarvest
+	return p.harvestable
 }
 
 func (p *Plant) SetReadyToHarvest(){
-	p.readyToHarvest = true
+	p.harvestable = true
 	fmt.Println("Ready to harvest!")
 }
 

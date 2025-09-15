@@ -6,6 +6,11 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+//item name constants
+const CARROT_SEED string = "carrot_seed"
+const CARROT string = "carrot"
+const HOE string = "hoe"
+
 type Item struct {
 	Name     string
 	Value    int
