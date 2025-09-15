@@ -11,34 +11,30 @@ type Plant struct{
 	currentStage int
 	maxStage int
 	timerTime time.Duration
-	watered bool
-	fertilized bool
-	readyToHarvest bool
+	harvestable bool
 	//animation object
 	//physics object
 	// stageTimer time.Timer
 }
 
-func NewPlant(_name string, _timerTime time.Duration, max int) Plant{
+func NewPlant(_name string, _timerTime time.Duration, max int) *Plant{
 	plantObj := Plant{
 		name: _name,
-		currentStage: 0,
+		currentStage: 1,
 		maxStage: max,
 		timerTime: _timerTime,
-		watered: false,
-		fertilized: false,
-		readyToHarvest: false}
+		harvestable: false}
 
 	//new animation object
 	//new physics object
 
 	plantObj.SetPlantTimer(plantObj.timerTime)
 
-	return plantObj
+	return &plantObj
 }
 
 func (p Plant) PrintPlant(){
-	fmt.Println("---\nName: ", p.name, "\nStage: ", p.currentStage, "\nMax: ", p.maxStage, "\nWatered: ", p.watered, "\nFertilized: ", p.fertilized, "\nHarvestable: ", p.readyToHarvest, "\nTimer: "/*, p.stageTimer.GetDuration(), "\n---"*/)
+	fmt.Println("---\nName: ", p.name, "\nStage: ", p.currentStage, "\nMax: ", p.maxStage, "\nHarvestable: ", p.harvestable, "\nTimer: "/*, p.stageTimer.GetDuration(), "\n---"*/)
 }
 
 func (p *Plant) UpdatePlant(){
@@ -67,30 +63,14 @@ func (p *Plant) UpdateStage(){
 	if(p.GetStage() >= p.GetMaxStage()){ 
 		p.SetReadyToHarvest()
 	}else{p.IncrementStage()}
-}
-
-func (p *Plant) IsWatered() bool{
-	return p.watered
-}
-
-func (p *Plant) SetWatered(){
-	p.watered = true
-}
-
-func (p *Plant) IsFertilized() bool{
-	return p.fertilized
-}
-
-func (p *Plant) SetFertilized(){
-	p.fertilized = true
 } 
 
 func (p *Plant) IsReadyToHarvest() bool{
-	return p.readyToHarvest
+	return p.harvestable
 }
 
 func (p *Plant) SetReadyToHarvest(){
-	p.readyToHarvest = true
+	p.harvestable = true
 	fmt.Println("Ready to harvest!")
 }
 
