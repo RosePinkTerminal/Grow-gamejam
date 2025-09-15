@@ -24,9 +24,16 @@ func NewPlot(_location rl.Vector2) *Plot{
 }
 
 func (p Plot)DrawPlot(){
-	if(p.HasPlant()){
-			p.GetPlant().DrawPlant(p.location);
+	if(!p.HasPlant()){
+		p.DrawEmptyPlot()
+	}else{
+		p.GetPlant().DrawPlant(p.location);
 	}
+}
+
+func (p Plot)DrawEmptyPlot(){
+	//draw rectangle at plot
+	rl.DrawRectangle(int32(p.location.X+16), int32(p.location.Y+16), 32, 32, rl.Brown)
 }
 
 //fully resets plot to empty state
@@ -83,6 +90,9 @@ func (p Plot)HasPlant() bool{
 	return p.hasPlant;
 }
 
-func (p Plot)GetPlant() Plant{
-	return *p.Plant;
+func (p Plot)GetPlant() *Plant{
+	if(!p.hasPlant){
+		return nil
+	}
+	return p.Plant;
 }
