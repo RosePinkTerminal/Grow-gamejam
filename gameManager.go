@@ -7,7 +7,6 @@ import(
 
 type GameManager struct{
 	*PlotTiles
-	selectedItem int
 	*Inventory
 }
 
@@ -16,11 +15,11 @@ func NewGameManager() GameManager{
 	inv := NewInventory(5);
 	inv.AddItem(CARROT_SEED, 5, 1);
 
-	return GameManager{PlotTiles: pt, selectedItem: 0, Inventory: inv};
+	return GameManager{PlotTiles: pt, Inventory: inv};
 }
 
 func (gm GameManager) GetSelectedItem() *Item{
-	return gm.Slots[gm.selectedItem];
+	return gm.Slots[gm.SelectedIndex];
 }
 
 //better draw texture function

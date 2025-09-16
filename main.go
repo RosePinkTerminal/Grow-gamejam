@@ -76,6 +76,10 @@ func main(){
 			}
 		}
 
+		if(rl.IsKeyPressed(rl.KeyI)){
+			fmt.Println("selected index: ", gm.SelectedIndex);
+		}
+
 		rl.EndDrawing()
 	}
 }

@@ -116,7 +116,7 @@ func DrawInventory(showInventory bool, textures map[string]rl.Texture2D, invento
         // Handle click
         if hovered && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
             inventory.SelectedIndex = index
-            fmt.Println("Selected slot:", index)
+            fmt.Println("Selected slot:", inventory.SelectedIndex)
         }
 
         // Draw item if present

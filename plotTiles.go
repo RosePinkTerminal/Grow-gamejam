@@ -44,13 +44,14 @@ func (tiles PlotTiles)DrawTiles(){
 }
 
 func (gm *GameManager) PlantPlot(plot *Plot){
-	if(gm.GetSelectedItem != nil){
+	fmt.Println("index:", gm.SelectedIndex)
+	if(gm.GetSelectedItem != nil && gm.SelectedIndex >=0){
 		gm.GetSelectedItem().Quantity--;
-	switch(gm.GetSelectedItem().Name){
-	case CARROT_SEED:
-		plot.AddPlant(NewCarrotPlant());
-		fmt.Println("Planted Carrot");
-	}
+		switch(gm.GetSelectedItem().Name){
+		case CARROT_SEED:
+			plot.AddPlant(NewCarrotPlant());
+			fmt.Println("Planted Carrot");
+		}
 	}
 	
 }
