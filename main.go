@@ -29,14 +29,7 @@ func main(){
 	var showStore bool = false
 	var buying bool = false
 
-	gm := NewGameManager()
-
-	for !rl.WindowShouldClose(){
-		rl.BeginDrawing()
-
-		rl.ClearBackground(rl.Black)
-
-		// Load all textures into a map
+	// Load all textures into a map
 	textures := make(map[string]rl.Texture2D)
 	textures["carrot"] = rl.LoadTexture("assets/carrot..png")
 	textures["carrot_seed"] = rl.LoadTexture("assets/carrot_seed.png")
@@ -44,6 +37,13 @@ func main(){
 
 	// Add more textures as needed
 	defer rl.UnloadTexture(textures["carrot"])
+
+	gm := NewGameManager()
+
+	for !rl.WindowShouldClose(){
+		rl.BeginDrawing()
+
+		rl.ClearBackground(rl.Black)
 
 
 		gm.UpdatePlot()
