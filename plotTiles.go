@@ -53,6 +53,8 @@ func (gm *GameManager) PlantPlot(plot *Plot){
 }
 
 func (gm *GameManager)UpdatePlot(){
+	DrawDirt();
+
 	mouseLocation := rl.GetMousePosition();
 	for _, plot := range gm.plots{
 		plot.DrawPlot();
@@ -70,4 +72,8 @@ func (gm *GameManager)UpdatePlot(){
 			}
 		}
 	}
+}
+
+func DrawDirt(){
+	rl.DrawRectangle(64, 64, 672, 320, rl.Brown)
 }
