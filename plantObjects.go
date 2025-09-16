@@ -7,9 +7,10 @@ import (
 //---carrot plant---
 
 const CARROT_STAGES = 4
+const CARROT_PLANT string = "carrot_plant"
 
 func NewCarrotPlant() *Plant{
-	return NewPlant("Carrot Plant", 5, CARROT_STAGES, LoadCarrotTextures())
+	return NewPlant(CARROT_PLANT, 5, CARROT_STAGES, LoadCarrotTextures())
 }
 
 func LoadCarrotTextures() []rl.Texture2D{

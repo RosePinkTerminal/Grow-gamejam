@@ -39,7 +39,7 @@ func (p Plant) DrawPlant(location rl.Vector2){
 	//check if texture at stage-1 exists
 	if(len(p.stageText) >= p.currentStage-1 && &p.stageText[p.currentStage-1] != nil){
 		//draw texture at stage-1
-		DrawTextureEz(p.stageText[p.currentStage-1], rl.NewVector2(location.X+16,location.Y+16), 0, 1, rl.White)
+		DrawTextureEz(p.stageText[p.currentStage-1], rl.NewVector2(location.X+32,location.Y+32), 0, 1, rl.White)
 	}
 }
 
