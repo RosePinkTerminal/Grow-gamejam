@@ -5,7 +5,6 @@ import(
 	"fmt"
 )
 
-
 func main(){
 	rl.InitWindow(800,450,"Game")
 	defer rl.CloseWindow()
@@ -20,6 +19,7 @@ func main(){
 		rl.BeginDrawing()
 
 		rl.ClearBackground(rl.Black)
+
 
 
 		gm.UpdatePlot()
