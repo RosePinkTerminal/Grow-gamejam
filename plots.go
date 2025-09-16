@@ -27,11 +27,15 @@ func NewPlot(_location rl.Vector2) *Plot{
 }
 
 func (gm *GameManager)Select(p *Plot){
-	switch(gm.Slots[gm.selectedItem].Name){
+	fmt.Println("sleected:",gm.SelectedIndex)
+	if(gm.SelectedIndex >= 0){
+		switch(gm.Slots[gm.SelectedIndex].Name){
 	case CARROT_SEED:
 			p.AddPlant(NewCarrotPlant());
-			gm.Slots[gm.selectedItem].Quantity--;
+			gm.Slots[gm.SelectedIndex].Quantity--;
 	}
+	}
+	
 }
 
 func (p Plot)DrawPlot(){
