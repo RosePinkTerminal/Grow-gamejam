@@ -19,15 +19,18 @@ type Item struct {
 }
 
 type Inventory struct {
-	Slots []*Item
-	Limit int
+
+    Slots         []Item
+    Limit         int
+    SelectedIndex int // -1 means none selected
 }
 
 func NewInventory(limit int) *Inventory {
-	return &Inventory{
-		Slots: make([]*Item, 0, limit),
-		Limit: limit,
-	}
+    return &Inventory{
+        Slots:         make([]Item, 0, limit),
+        Limit:         limit,
+        SelectedIndex: -1,
+    }
 }
 
 func (inv *Inventory) AddItem(name string, value int, quantity int) error {
@@ -70,28 +73,63 @@ func (inv *Inventory) ListItems() {
 	}
 }
 
-func DrawInventory(showInventory bool, textures map[string]rl.Texture2D) {
-	inventory := NewInventory(10)
-	inventory.AddItem("carrot",20, 5)
-	inventory.AddItem("carrot_seed", 5, 3)
-	inventory.AddItem("hoe", 0, 1)
+func DrawInventory(showInventory bool, textures map[string]rl.Texture2D, inventory *Inventory) {
+    if !showInventory {
+        return
+    }
 
-	inventory.ListItems()
+    // Inventory window background
+    rl.DrawRectangle(
+        int32(rl.GetScreenWidth())/20,
+        int32(rl.GetScreenHeight())/10,
+        int32(rl.GetScreenWidth()/2)-80,
+        int32(rl.GetScreenHeight())/5+25*2,
+        rl.LightGray,
+    )
+    rl.DrawText("Inventory", int32(rl.GetScreenWidth())/15, int32(rl.GetScreenHeight())/8, 20, rl.Black)
 
-	// Draw inventory UI once per call
-	rl.DrawRectangle(int32(rl.GetScreenWidth())/20, int32(rl.GetScreenHeight())/10, int32(rl.GetScreenWidth()/2)-80, int32(rl.GetScreenHeight())/5+25*2, rl.LightGray)
-	rl.DrawText("Inventory", int32(rl.GetScreenWidth())/15, int32(rl.GetScreenHeight())/8, 20, rl.Black)
+    mousePos := rl.GetMousePosition()
 
-	for index := 0; index < inventory.Limit; index++ {
-		rl.DrawRectangle(int32(rl.GetScreenWidth())/20+14+int32(index%5)*60, int32(rl.GetScreenHeight())/10+40+int32(index/5)*60, 50, 50, rl.DarkGray)
-		if index < len(inventory.Slots) {
-    		item := inventory.Slots[index]
-    		rl.DrawText(fmt.Sprintf("x%d", item.Quantity), int32(rl.GetScreenWidth())/20+20+int32(index%5)*60, int32(rl.GetScreenHeight())/10+78+int32(index/5)*60, 10, rl.White)
+    // Loop through slots
+    for index := 0; index < inventory.Limit; index++ {
+        // Compute slot position
+        x := int32(rl.GetScreenWidth())/20 + 14 + int32(index%5)*60
+        y := int32(rl.GetScreenHeight())/10 + 40 + int32(index/5)*60
+        slotRect := rl.NewRectangle(float32(x), float32(y), 50, 50)
 
-	// use item name to load texture dynamically
-    		if tex, ok := textures[item.Name]; ok {
-        		rl.DrawTexture(tex, int32(rl.GetScreenWidth())/20+20+int32(index%5)*60, int32(rl.GetScreenHeight())/10+45+int32(index/5)*60, rl.White)
-    		} 
-		}
-	}
+        hovered := rl.CheckCollisionPointRec(mousePos, slotRect)
+
+        // Change color if hovered or selected
+        slotColor := rl.DarkGray
+        if hovered {
+            slotColor = rl.LightGray
+        }
+        rl.DrawRectangleRec(slotRect, slotColor)
+
+        // Draw selection outline if this slot is selected
+        if index == inventory.SelectedIndex {
+            rl.DrawRectangleLinesEx(slotRect, 3, rl.Green)
+        } else {
+            rl.DrawRectangleLinesEx(slotRect, 1, rl.Black)
+        }
+
+        // Handle click
+        if hovered && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+            inventory.SelectedIndex = index
+            fmt.Println("Selected slot:", index)
+        }
+
+        // Draw item if present
+        if index < len(inventory.Slots) {
+            item := inventory.Slots[index]
+            rl.DrawText(fmt.Sprintf("x%d", item.Quantity), x+6, y+38, 10, rl.White)
+
+            // Draw texture if available
+            if tex, ok := textures[item.Name]; ok {
+                rl.DrawTexture(tex, x+6, y+5, rl.White)
+            } else {
+                rl.DrawText(item.Name, x+5, y+20, 10, rl.White)
+            }
+        }
+    }
 }
