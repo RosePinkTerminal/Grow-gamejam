@@ -1,78 +1,31 @@
 package main
 
-import (
-	"fmt"
-
+import(
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"fmt"
 )
 
-type Player struct {
-	inventory Inventory
-	money     int
-}
 
 func main(){
-
-	var player Player = Player{
-		inventory: *NewInventory(10),
-		money:     25,
-	}
-
-	player.inventory.AddItem("carrot", 20, 10)
-
-	gm := NewGameManager()///temp
-
-	var showInventory bool = false
-	var showStore bool = false
-	var buying bool = false
-
-	rl.SetTargetFPS(60)
-	rl.InitWindow(800, 600, "Inventory Example")
+	rl.InitWindow(800,450,"Game")
 	defer rl.CloseWindow()
+	rl.InitAudioDevice()
+	defer rl.CloseAudioDevice()
 
-	// Load all textures into a map
-	textures := make(map[string]rl.Texture2D)
-	textures["carrot"] = rl.LoadTexture("assets/carrot..png")
-	textures["carrot_seed"] = rl.LoadTexture("assets/carrot_seed.png")
-	textures["shopkeeper"] = rl.LoadTexture("assets/shopkeeper.png")
+	rl.SetTargetFPS(60);
 
-	// Add more textures as needed
-	defer rl.UnloadTexture(textures["carrot"])
+	gm := NewGameManager()
 
-	for !rl.WindowShouldClose() {
+	for !rl.WindowShouldClose(){
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.RayWhite)
 
-		if rl.IsKeyPressed(rl.KeyE) {
-			showInventory = !showInventory
-		}
+		rl.ClearBackground(rl.Black)
 
-		if showInventory {
-			DrawInventory(showInventory, textures, &player.inventory)
-		}
-		gm.UpdatePlot();
+
+		gm.DrawTiles()
 
 		if(rl.IsKeyPressed(rl.KeyS)){
 			fmt.Println("selected item: ", gm.GetSelectedItem().Name)
-
-		if rl.IsKeyPressed(rl.KeyS) {
-			showStore = !showStore
-		}
-
-		if showStore {
-			DrawStore(showStore, textures, &player, buying)
-		}
-
-		if rl.IsMouseButtonPressed(rl.MouseButtonLeft) && showStore {
-			mouseX := rl.GetMouseX()
-			mouseY := rl.GetMouseY()
-			if mouseX >= 120 && mouseX <= 200 && mouseY >= 330 && mouseY <= 380 {
-				buying = true
-				fmt.Println("buying: ", buying)
-			} else if mouseX >= 240 && mouseX <= 320 && mouseY >= 330 && mouseY <= 380 {
-				buying = false
-				fmt.Println("buying: ", buying)
-			}
 		}
 
 		rl.EndDrawing()
