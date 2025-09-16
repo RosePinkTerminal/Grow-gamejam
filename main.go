@@ -53,7 +53,7 @@ func main(){
 		}
 
 		if showInventory {
-			//DrawInventory(showInventory, textures, &player.inventory)
+			DrawInventory(showInventory, textures, player.inventory)
 		}
 
 		if rl.IsKeyPressed(rl.KeyS) {

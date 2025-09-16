@@ -20,14 +20,14 @@ type Item struct {
 
 type Inventory struct {
 
-    Slots         []Item
+    Slots         []*Item
     Limit         int
     SelectedIndex int // -1 means none selected
 }
 
 func NewInventory(limit int) *Inventory {
     return &Inventory{
-        Slots:         make([]Item, 0, limit),
+        Slots:         make([]*Item, 0, limit),
         Limit:         limit,
         SelectedIndex: -1,
     }
