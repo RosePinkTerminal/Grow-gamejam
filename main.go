@@ -11,7 +11,7 @@ type Player struct {
 }
 
 func main(){
-	rl.InitWindow(800,450,"Game")
+	rl.InitWindow(800,600,"Game")
 	defer rl.CloseWindow()
 	rl.InitAudioDevice()
 	defer rl.CloseAudioDevice()
